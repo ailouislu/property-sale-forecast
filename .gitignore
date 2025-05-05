@@ -12,6 +12,7 @@
 # production
 /build
 /test-results
+/.vscode
 
 # misc
 .DS_Store
