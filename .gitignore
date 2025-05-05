@@ -13,6 +13,7 @@
 /build
 /test-results
 /.vscode
+/.idx
 
 # misc
 .DS_Store
