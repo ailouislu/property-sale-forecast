@@ -43,7 +43,7 @@ describe("App", () => {
     );
 
     await screen.findByText(/Loading.../i);
-    const Properties = await screen.findByText(/Properties found./i);
+    const Properties = await screen.findByText(/Predicted Properties/i);
     expect(Properties).toBeInTheDocument();
   });
 

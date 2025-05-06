@@ -11,12 +11,22 @@ if (!supabaseKey) {
 }
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-export async function fetchPropertiesByCity(city: string): Promise<Property[]> {
-  const { data, error } = await supabase
+export async function fetchPropertiesByCity(
+  city: string,
+  page: number = 0,
+  pageSize: number = 9,
+  suburbs: string[] | null = null
+): Promise<Property[]> {
+  let query = supabase
     .from("properties")
     .select("*")
-    .eq("city", city);
+    .eq("city", city)
+    .range(page * pageSize, (page + 1) * pageSize - 1);
 
+  if (suburbs && suburbs.length > 0) {
+    query = query.in("suburb", suburbs);
+  }
+  const { data, error } = await query;
   if (error) throw new Error(error.message);
   return data as Property[];
 }

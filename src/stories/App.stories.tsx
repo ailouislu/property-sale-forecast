@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from "@storybook/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
-import { ChakraProvider, Center, Spinner } from "@chakra-ui/react";
+import { ChakraProvider, Center, Spinner, Text } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { usePropertiesData } from "../hooks/usePropertiesData";
 import Properties from "../components/Properties/Properties";
@@ -27,9 +27,9 @@ export default {
 } as Meta;
 
 export const WithRealData: StoryFn = () => {
-  const { loading, error } = usePropertiesData("Wellington");
+  const { isLoading, error } = usePropertiesData("Wellington");
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Center h="200px">
         <Spinner size="lg" />
@@ -37,7 +37,11 @@ export const WithRealData: StoryFn = () => {
     );
   }
   if (error) {
-    return <Center color="red.500">Error: {error}</Center>;
+    return (
+      <Center color="red.500">
+        <Text>Error: {error?.message}</Text>
+      </Center>
+    );
   }
   return <Properties />;
 };

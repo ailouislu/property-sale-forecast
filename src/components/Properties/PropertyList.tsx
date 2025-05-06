@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Text, Badge, Stack, SimpleGrid, Link } from "@chakra-ui/react";
+import React from 'react';
+import { Box, Text, Badge, Stack, SimpleGrid, Link } from '@chakra-ui/react';
 import { Property } from "../properties.type";
 
 const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
@@ -10,6 +10,7 @@ const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
           href={`https://www.propertyvalue.co.nz/${property.address.replace(/\s+/g, "-")}`}
           isExternal
           fontWeight="bold"
+          fontSize="md"
         >
           {property.address}
         </Link>
@@ -23,10 +24,19 @@ const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
         >
           {property.predicted_status} ({property.confidence_score})
         </Badge>
-        <Text fontSize="xs">
+        <Text fontSize="sm">
           Last sold: {property.last_sold_date} (${property.last_sold_price})
         </Text>
-        <Text fontSize="xs">
+        <Text fontSize="sm">
+ Price: ${property.price}
+ </Text>
+ <Text fontSize="sm">
+ Predicted Price: ${property.predicted_price}
+ </Text>
+ <Text fontSize="sm">
+ Category: {property.category}
+ </Text>
+ <Text fontSize="sm">
           Bedrooms: {property.bedrooms}, Bathrooms: {property.bathrooms}
         </Text>
       </Stack>

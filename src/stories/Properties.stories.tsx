@@ -17,7 +17,7 @@ type Story = StoryObj<typeof Properties>;
 
 export const WithRealData: Story = {
   render: () => {
-    const queryClient = new QueryClient();
+    const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: Infinity } } });
     return (
       <MemoryRouter initialEntries={["/properties"]}>
         <QueryClientProvider client={queryClient}>

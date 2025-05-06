@@ -5,6 +5,9 @@ export interface Property {
     city: string;
     predicted_status: string;
     confidence_score: number;
+    price: number;
+    predicted_price: number;
+    category: string;
     last_sold_price: number;
     last_sold_date: string;
     property_history: string;
