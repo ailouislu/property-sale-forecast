@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import "@testing-library/jest-dom";
 import App from "./App";
-import { ChakraProvider } from "@chakra-ui/react";
 
 jest.mock("./components/Properties/PropertyList", () => ({
   __esModule: true,
@@ -23,9 +23,7 @@ describe("App", () => {
   test("renders navigation bar with correct links and image", async () => {
     render(
       <MemoryRouter>
-        <ChakraProvider>
-          <App />
-        </ChakraProvider>
+        <App />
       </MemoryRouter>
     );
 
@@ -35,5 +33,28 @@ describe("App", () => {
     const propertyLink = screen.getByRole("link", { name: /Properties/i });
 
     expect(propertyLink).toBeInTheDocument();
+  });
+
+  test("renders PropertyList component when at '/property' route", async () => {
+    render(
+      <MemoryRouter initialEntries={["/property"]}>
+        <App />
+      </MemoryRouter>
+    );
+
+    await screen.findByText(/Loading.../i);
+    const Properties = await screen.findByText(/Properties found./i);
+    expect(Properties).toBeInTheDocument();
+  });
+
+  test("renders NotFound component when at unknown route", async () => {
+    render(
+      <MemoryRouter initialEntries={["/unknown"]}>
+        <App />
+      </MemoryRouter>
+    );
+
+    const notFound = await screen.findByTestId("not-found");
+    expect(notFound).toBeInTheDocument();
   });
 });

@@ -2,14 +2,15 @@ import { Meta, StoryFn } from "@storybook/react";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import { ChakraProvider, Center, Spinner } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import PropertyList from "../components/Properties/PropertyList";
 import { usePropertiesData } from "../hooks/usePropertiesData";
+import Properties from "../components/Properties/Properties";
+import App from "../App";
 
 const queryClient = new QueryClient();
 
 export default {
   title: "Project/FullApp",
-  component: PropertyList,
+  component: App,
   decorators: [
     (Story) => (
       <MemoryRouter initialEntries={["/properties"]}>
@@ -26,7 +27,7 @@ export default {
 } as Meta;
 
 export const WithRealData: StoryFn = () => {
-  const { properties, loading, error } = usePropertiesData("Wellington");
+  const { loading, error } = usePropertiesData("Wellington");
 
   if (loading) {
     return (
@@ -38,5 +39,5 @@ export const WithRealData: StoryFn = () => {
   if (error) {
     return <Center color="red.500">Error: {error}</Center>;
   }
-  return <PropertyList properties={properties} />;
+  return <Properties />;
 };

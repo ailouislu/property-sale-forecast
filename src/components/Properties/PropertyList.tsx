@@ -34,12 +34,14 @@ const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
   );
 };
 
-const PropertyList: React.FC<{ properties: Property[] }> = ({ properties }) => (
-  <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5}>
-    {properties.map((p) => (
-      <PropertyCard key={p.id} property={p} />
-    ))}
-  </SimpleGrid>
-);
+const PropertyList: React.FC<{ properties: Property[] }> = ({ properties }) => {
+  return (
+    <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5}>
+      {properties.map((p) => (
+        <PropertyCard key={p.id} property={p} />
+      ))}
+    </SimpleGrid>
+  );
+};
 
 export default PropertyList;

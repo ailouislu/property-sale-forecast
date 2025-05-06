@@ -1,21 +1,14 @@
-import React, { useState } from "react";
-import { Container, Input, Heading, Spinner, Center } from "@chakra-ui/react";
+import React from "react";
+import { Container, Heading, Spinner, Center } from "@chakra-ui/react";
 import PropertyList from "./PropertyList";
 import { usePropertiesData } from "../../hooks/usePropertiesData";
 
 const Properties: React.FC = () => {
-  const [city, setCity] = useState("Wellington");
-  const { properties, loading, error } = usePropertiesData(city);
+  const { properties, loading, error } = usePropertiesData("Wellington");
 
   return (
     <Container maxW="1200px" py={6}>
-      <Heading mb={4}>Predicted Properties in {city}</Heading>
-      <Input
-        placeholder="Enter city..."
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        mb={6}
-      />
+      <Heading mb={4}>Predicted Properties</Heading>
       {loading ? (
         <Center>
           <Spinner />
