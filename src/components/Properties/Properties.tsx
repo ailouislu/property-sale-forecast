@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Container,
   Heading,
@@ -7,11 +7,11 @@ import {
   VStack,
   Select,
   HStack,
-  Button,
 } from "@chakra-ui/react";
 import PropertyList from "./PropertyList";
 import { usePropertiesData } from "../../hooks/usePropertiesData";
 const Properties: React.FC = () => {
+  const lastPropertyElementRef = useRef<HTMLDivElement | null>(null);
   const [selectedCity, setSelectedCity] = useState("Wellington");
   const [selectedSuburb, setSelectedSuburb] = useState<string[]>([]);
   const {
@@ -20,10 +20,33 @@ const Properties: React.FC = () => {
     isLoading,
     isError,
     error,
-    refetch,
+    fetchNextPage,
+    hasNextPage,
   } = usePropertiesData(selectedCity, selectedSuburb);
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    }, {});
+    const currentElement = lastPropertyElementRef.current;
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+
+    return () => observer.disconnect();
+  }, [
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    selectedCity,
+    selectedSuburb,
+  ]);
+
   const properties = data?.pages.flatMap((page) => page) || [];
   const wellingtonSuburbs: string[] = [
+    "Johnsonville",
+    "Khandallah",
     "Brooklyn",
     "Kelburn",
     "Highbury",
@@ -32,8 +55,19 @@ const Properties: React.FC = () => {
     "Kilbirnie",
     "Miramar",
   ];
-  return (<Container maxW="1200px" py={6}> <Heading mb={4}>Predicted Properties</Heading> <HStack spacing={4} mb={4}>
-        <Select placeholder="Select City" value={selectedCity} onChange={(e) => setSelectedCity(e.target.value)}>
+  return (
+    <Container maxW="1200px" py={6}>
+      {" "}
+      <Heading mb={4}>Predicted Properties</Heading>{" "}
+      <HStack spacing={4} mb={4}>
+        <Select
+          placeholder="Select City"
+          value={selectedCity}
+          onChange={(e) => {
+            setSelectedCity(e.target.value);
+            setSelectedSuburb([]);
+          }}
+        >
           <option value="Wellington">Wellington</option>
           <option value="Auckland">Auckland</option>
         </Select>
@@ -41,25 +75,42 @@ const Properties: React.FC = () => {
           <Select
             placeholder="Select Suburb(s)"
             value={selectedSuburb}
-            onChange={(e) => setSelectedSuburb(Array.from(e.target.selectedOptions, option => option.value))}
+            onChange={(e) =>
+              setSelectedSuburb(
+                Array.from(e.target.selectedOptions, (option) => option.value)
+              )
+            }
           >
             {wellingtonSuburbs.map((suburb) => (
-              <option key={suburb} value={suburb}>{suburb}</option>
+              <option key={suburb} value={suburb}>
+                {suburb}
+              </option>
             ))}
-
           </Select>
         )}
-
-        <Button onClick={() => refetch()} disabled={!selectedCity} colorScheme="blue">
-          Query
-        </Button>
       </HStack>
-
-      {isLoading ? ( <Center> <Spinner /> </Center> ) : isError ? (
+      {isLoading ? (
+        <Center>
+          {" "}
+          <Spinner size="xl" />{" "}
+        </Center>
+      ) : isError ? (
         <Center color="red.500">{(error as Error)?.message}</Center>
       ) : (
- <VStack spacing={4}> <PropertyList properties={properties} /> {isFetchingNextPage && ( <Center><Spinner size="xl"/></Center> )} </VStack> )}
+        <VStack spacing={4}>
+          {" "}
+          <PropertyList
+            properties={properties}
+            lastPropertyElementRef={lastPropertyElementRef}
+          />{" "}
+          {isFetchingNextPage && (
+            <Center>
+              <Spinner size="xl" />
+            </Center>
+          )}{" "}
+        </VStack>
+      )}
     </Container>
- );
+  );
 };
 export default Properties;
