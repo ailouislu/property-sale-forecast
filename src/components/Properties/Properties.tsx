@@ -13,7 +13,7 @@ import { usePropertiesData } from "../../hooks/usePropertiesData";
 const Properties: React.FC = () => {
   const lastPropertyElementRef = useRef<HTMLDivElement | null>(null);
   const [selectedCity, setSelectedCity] = useState("Wellington");
-  const [selectedSuburb, setSelectedSuburb] = useState<string[]>([]);
+  const [selectedSuburb, setSelectedSuburb] = useState<string>("Khandallah");
   const {
     data,
     isFetchingNextPage,
@@ -22,26 +22,23 @@ const Properties: React.FC = () => {
     error,
     fetchNextPage,
     hasNextPage,
-  } = usePropertiesData(selectedCity, selectedSuburb);
+  } = usePropertiesData(selectedCity, [selectedSuburb]);
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-        fetchNextPage();
-      }
-    }, {});
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.5 }
+    );
     const currentElement = lastPropertyElementRef.current;
     if (currentElement) {
       observer.observe(currentElement);
     }
 
     return () => observer.disconnect();
-  }, [
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    selectedCity,
-    selectedSuburb,
-  ]);
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage, selectedSuburb]);
 
   const properties = data?.pages.flatMap((page) => page) || [];
   const wellingtonSuburbs: string[] = [
@@ -65,7 +62,7 @@ const Properties: React.FC = () => {
           value={selectedCity}
           onChange={(e) => {
             setSelectedCity(e.target.value);
-            setSelectedSuburb([]);
+            setSelectedSuburb("");
           }}
         >
           <option value="Wellington">Wellington</option>
@@ -73,13 +70,9 @@ const Properties: React.FC = () => {
         </Select>
         {selectedCity === "Wellington" && (
           <Select
-            placeholder="Select Suburb(s)"
+            placeholder="Select Suburb"
             value={selectedSuburb}
-            onChange={(e) =>
-              setSelectedSuburb(
-                Array.from(e.target.selectedOptions, (option) => option.value)
-              )
-            }
+            onChange={(e) => setSelectedSuburb(e.target.value)}
           >
             {wellingtonSuburbs.map((suburb) => (
               <option key={suburb} value={suburb}>
@@ -88,8 +81,8 @@ const Properties: React.FC = () => {
             ))}
           </Select>
         )}
-      </HStack>
-      {isLoading ? (
+      </HStack>{" "}
+      {isLoading && !isFetchingNextPage ? (
         <Center>
           {" "}
           <Spinner size="xl" />{" "}
@@ -102,12 +95,12 @@ const Properties: React.FC = () => {
           <PropertyList
             properties={properties}
             lastPropertyElementRef={lastPropertyElementRef}
-          />{" "}
+          />
           {isFetchingNextPage && (
             <Center>
               <Spinner size="xl" />
             </Center>
-          )}{" "}
+          )}
         </VStack>
       )}
     </Container>

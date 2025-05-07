@@ -12,6 +12,15 @@ jest.mock("./components/Properties/PropertyList", () => ({
   ),
 }));
 
+jest.mock("./components/Properties/Properties", () => ({
+  __esModule: true,
+  default: () => (
+    <div data-testid="properties-component">
+      <h2>Predicted Properties</h2>
+    </div>
+  ),
+}));
+
 jest.mock("./components/NotFound", () => ({
   __esModule: true,
   default: () => <div data-testid="not-found">Page not found</div>,
@@ -42,9 +51,8 @@ describe("App", () => {
       </MemoryRouter>
     );
 
-    await screen.findByText(/Loading.../i);
-    const Properties = await screen.findByText(/Predicted Properties/i);
-    expect(Properties).toBeInTheDocument();
+    const propertiesComponent = await screen.findByTestId("properties-component");
+    expect(propertiesComponent).toBeInTheDocument();
   });
 
   test("renders NotFound component when at unknown route", async () => {
