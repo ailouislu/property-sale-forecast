@@ -18,7 +18,7 @@ export async function fetchPropertiesByCity(
   suburbs: string[] | null = null
 ): Promise<Property[]> {
   let query = supabase
-    .from("properties")
+    .from("properties_with_latest_status")
     .select("*")
     .eq("city", city)
     .range(page * pageSize, (page + 1) * pageSize - 1);
@@ -26,7 +26,12 @@ export async function fetchPropertiesByCity(
   if (suburbs && suburbs.length > 0 && suburbs[0] !== "") {
     query = query.in("suburb", suburbs);
   }
+
   const { data, error } = await query;
-  if (error) throw new Error(error.message);
+
+  if (error) {
+    throw new Error(`fetchPropertiesByCity error: ${error.message}`);
+  }
+
   return data as Property[];
 }
