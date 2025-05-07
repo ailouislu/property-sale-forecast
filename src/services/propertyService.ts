@@ -23,7 +23,7 @@ export async function fetchPropertiesByCity(
     .eq("city", city)
     .range(page * pageSize, (page + 1) * pageSize - 1);
 
-  if (suburbs && suburbs.length > 0) {
+  if (suburbs && suburbs.length > 0 && suburbs[0] !== "") {
     query = query.in("suburb", suburbs);
   }
   const { data, error } = await query;

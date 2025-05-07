@@ -13,7 +13,7 @@ import { usePropertiesData } from "../../hooks/usePropertiesData";
 const Properties: React.FC = () => {
   const lastPropertyElementRef = useRef<HTMLDivElement | null>(null);
   const [selectedCity, setSelectedCity] = useState("Wellington");
-  const [selectedSuburb, setSelectedSuburb] = useState<string>("Khandallah");
+  const [selectedSuburb, setSelectedSuburb] = useState<string>("");
   const {
     data,
     isFetchingNextPage,
