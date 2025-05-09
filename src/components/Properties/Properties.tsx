@@ -42,15 +42,15 @@ const Properties: React.FC = () => {
 
   const properties = data?.pages.flatMap((page) => page) || [];
   const wellingtonSuburbs: string[] = [
-    "Johnsonville",
     "Khandallah",
-    "Brooklyn",
-    "Kelburn",
-    "Highbury",
-    "Island Bay",
+    "Ngaio",
+    "Tawa",
+    "Newlands",
+    "Woodridge",
+    "Johnsonville",
+    "Churton Park",
+    "Kaiwharawhara",
     "Karori",
-    "Kilbirnie",
-    "Miramar",
   ];
   return (
     <Container maxW="1200px" py={6}>
