@@ -9,6 +9,7 @@ import {
   forwardRef,
 } from "@chakra-ui/react";
 import { Property } from "../properties.type";
+import formatNumberWithCommas from "../../utils/formatNumber";
 
 const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
   return (
@@ -33,13 +34,23 @@ const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
           {property.predicted_status} ({property.confidence_score})
         </Badge>
         <Text fontSize="sm">
-          Last sold: {property.last_sold_date} (${property.last_sold_price})
+          Last sold: {property.last_sold_date} ($
+          {formatNumberWithCommas(property.last_sold_price)})
         </Text>
-        <Text fontSize="sm">Price: ${property.price}</Text>
-        <Text fontSize="sm">Predicted Price: ${property.predicted_price}</Text>
-        <Text fontSize="sm">Category: {property.category}</Text>
+        <Text fontSize="sm">Built: {property.year_built}</Text>
         <Text fontSize="sm">
-          Bedrooms: {property.bedrooms}, Bathrooms: {property.bathrooms}
+          Floor: {property.floor_size}, Land Area: {property.land_area}
+        </Text>
+        <Text fontSize="sm">
+          Capital Value: ${formatNumberWithCommas(property.capital_value)}
+        </Text>
+        <Text fontSize="sm">
+          Has Rental History: {property.has_rental_history}, Is Rented:
+          {property.is_currently_rented}
+        </Text>
+        <Text fontSize="sm">
+          Bedrooms: {property.bedrooms}, Bathrooms: {property.bathrooms}, Car
+          Spaces: {property.car_spaces}
         </Text>
       </Stack>
     </Box>
