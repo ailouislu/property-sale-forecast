@@ -45,8 +45,8 @@ const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
           Capital Value: ${formatNumberWithCommas(property.capital_value)}
         </Text>
         <Text fontSize="sm">
-          Has Rental History: {property.has_rental_history}, Is Rented:
-          {property.is_currently_rented}
+          Has Rental History: {property.has_rental_history ? "Yes" : "No"}, Is
+          Rented: {property.is_currently_rented ? "Yes" : "No"}
         </Text>
         <Text fontSize="sm">
           Bedrooms: {property.bedrooms}, Bathrooms: {property.bathrooms}, Car
