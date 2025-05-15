@@ -4,6 +4,8 @@ import {
   Heading,
   Spinner,
   Center,
+  Skeleton,
+  SimpleGrid,
   VStack,
   Select,
   HStack,
@@ -83,10 +85,11 @@ const Properties: React.FC = () => {
         )}
       </HStack>{" "}
       {isLoading && !isFetchingNextPage ? (
-        <Center>
-          {" "}
-          <Spinner size="xl" />{" "}
-        </Center>
+        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5}>
+          {[...Array(5)].map((_, index) => (
+            <Skeleton key={index} height="200px" />
+          ))}
+        </SimpleGrid>
       ) : isError ? (
         <Center color="red.500">{(error as Error)?.message}</Center>
       ) : (
