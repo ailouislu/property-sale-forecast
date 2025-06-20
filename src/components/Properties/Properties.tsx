@@ -14,7 +14,7 @@ import PropertyList from "./PropertyList";
 import { usePropertiesData } from "../../hooks/usePropertiesData";
 const Properties: React.FC = () => {
   const lastPropertyElementRef = useRef<HTMLDivElement | null>(null);
-  const [selectedCity, setSelectedCity] = useState("Wellington");
+  const [selectedCity, setSelectedCity] = useState("Wellington City");
   const [selectedSuburb, setSelectedSuburb] = useState<string>("");
   const {
     data,
@@ -67,10 +67,10 @@ const Properties: React.FC = () => {
             setSelectedSuburb("");
           }}
         >
-          <option value="Wellington">Wellington</option>
+          <option value="Wellington City">Wellington</option>
           <option value="Auckland">Auckland</option>
         </Select>
-        {selectedCity === "Wellington" && (
+        {selectedCity === "Wellington City" && (
           <Select
             placeholder="Select Suburb"
             value={selectedSuburb}
