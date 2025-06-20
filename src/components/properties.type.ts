@@ -6,6 +6,7 @@ export interface PropertyStatus {
 
 export interface Property {
   id: string;
+  property_url: string;
   price: number;
   predicted_price: number;
   category: string;

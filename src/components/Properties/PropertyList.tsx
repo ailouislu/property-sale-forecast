@@ -16,7 +16,7 @@ const PropertyCard: React.FC<{ property: Property }> = ({ property }) => {
     <Box p={5} shadow="md" borderWidth="1px" borderRadius="lg">
       <Stack spacing={2}>
         <Link
-          href={`https://www.propertyvalue.co.nz/${property.address.replace(/\s+/g, "-")}`}
+          href={property.property_url}
           isExternal
           fontWeight="bold"
           fontSize="md"
